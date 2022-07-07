@@ -10,7 +10,7 @@ class CtfTimeScraper:
         self.url = "https://ctftime.org/api/v1/events/?limit=15"
 
     def ctftime_contest(self):
-        answ = Request(self.url, self.headers)
+        answ = Request(self.url, headers=self.headers)
         resp = urlopen(answ).read()
 
         # Decode response json into utf8 then load
@@ -46,4 +46,5 @@ class CtfTimeScraper:
 if __name__ == "__main__":
     # instanciate the class
     scraper = CtfTimeScraper()
+    # call the function, and print the results
     print(scraper.ctftime_contest())
