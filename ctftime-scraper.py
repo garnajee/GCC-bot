@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 from dateutil.parser import parse
 import json
 from urllib import request
