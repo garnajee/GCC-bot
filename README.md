@@ -6,20 +6,4 @@ Currently, it scrapes the latest 15 upcomming events.
 
 # Installation
 
-Comming up soon
-
-# Build docker image 
-
-```bash
-$ sudo docker build -t <name-of-docker> .
-$ sudo docker run <name-of-docker>
-```
-`-t` for --tag: add a tag/name for your docker
-
-To run in background the docker, add `-d`
-
-* In interactive mode (if we have user input for example) :
-
-```bash
-$ sudo docker run -it <name-of-docker>
-```
+See the [wiki](https://github.com/JeanS-github/GCC-bot/wiki) page.
