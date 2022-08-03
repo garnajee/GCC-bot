@@ -3,6 +3,7 @@ from dateutil.parser import parse
 import json
 from urllib import request
 from urllib.request import Request, urlopen
+import re
 
 class CtfTimeScraper:
     def __init__(self):
@@ -19,7 +20,7 @@ class CtfTimeScraper:
         events = json.loads(resp_body)
 
         # Initialize string to return
-        contests_string = "CAPTURE THE FLAGS\n\n"
+        #contests_string = "Latest 15 Capture The Flags\n"
         for event in events:
             # Iterate over the dictionary to extract
             # info for all on-line competitions
@@ -29,22 +30,37 @@ class CtfTimeScraper:
             contests_string += "Name: {}\n".format(event['title'])
 
             time_meta = event['start']
-            time_comp = parse(time_meta).isoformat(' ')
-            time = time_comp.split('+')[0]
-            contests_string += "From: {}\n".format(time)
+            time_comp = parse(time_meta).strftime("%d/%m/%Y - %H:%M:%S")
+            contests_string += "From: {}\n".format(time_comp)
 
             time_meta = event['finish']
-            time_comp = parse(time_meta).isoformat(' ')
-            time = time_comp.split('+')[0]
-            contests_string += "To: {}\n".format(time)
+            time_comp = parse(time_meta).strftime("%d/%m/%Y - %H:%M:%S")
+            contests_string += "To: {}\n".format(time_comp)
 
             contests_string += "Format: {}\n".format(event['format'])
             contests_string += "Duration: {} Days {} Hours\n\n".format(event['duration']['days'], event['duration']['hours'])
-
+            
+            contests_string += "url: {}\n\n".format(event['ctftime_url'])
         return contests_string
+    
+    def parse(self,allctf):
+        """
+        Function to parse the last 15 ctf events in a list to display it in a dynamic message
+        """
+        blocs = re.findall(r'Name: (.*)\nFrom: (.*)\nTo: (.*)\nFormat: (.*)\nDuration: (.*)\nurl: (.*)\n', allctf)
+
+        ctf_pages = []
+        for bloc in blocs:
+          Name, From, To, Format, Duration, url = bloc
+          sous_str = f'title="{Name}",description="From: {From}\nTo: {To}\nFormat: {Format}\nDuration: {Duration}\nurl: {url}",colour=discord.Colour.grey()'
+          ctf_pages.append(sous_str)
+        return ctf_pages
 
 if __name__ == "__main__":
     # instanciate the class
     scraper = CtfTimeScraper()
     # call the function, and print the results
-    print(scraper.ctftime_contest())
+    # print(scraper.ctftime_contest())
+    allctf_string=scraper.ctftime_contest()
+    print(scraper.parse(allctf_string))
+    
