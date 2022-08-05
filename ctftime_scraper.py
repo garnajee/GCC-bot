@@ -57,7 +57,7 @@ class CtfTimeScraper:
         return ctf_pages
 
 if __name__ == "__main__":
-    # instanciate the class
+    # instantiate the class
     scraper = CtfTimeScraper()
     # call the function, and print the results
     # print(scraper.ctftime_contest())
