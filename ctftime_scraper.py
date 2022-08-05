@@ -52,7 +52,7 @@ class CtfTimeScraper:
         ctf_pages = []
         for bloc in blocs:
           Name, From, To, Format, Duration, url = bloc
-          sous_str = f'title="{Name}",description="From: {From}\nTo: {To}\nFormat: {Format}\nDuration: {Duration}\nurl: {url}",colour=discord.Colour.grey()'
+          sous_str = f'discord.Embed(title="{Name}",description="From: {From}\nTo: {To}\nFormat: {Format}\nDuration: {Duration}\nurl: {url}",colour=discord.Colour.light_grey())'
           ctf_pages.append(sous_str)
         return ctf_pages
 
