@@ -1,8 +1,8 @@
 # GCC-bot
 
-GCC discord bot that scrape upcomming ctf events from [ctftime.org](https://ctftime.org/event/list/upcoming).
+GCC discord bot that display ctf events from the [ctftime.org](https://ctftime.org/event/list/upcoming) API.
 
-Currently, it scrapes the latest 15 upcomming events.
+Currently, it displays the latest 15 upcomming events on a *dynamic* message (1 message with multiple *pages*).
 
 # Installation
 
