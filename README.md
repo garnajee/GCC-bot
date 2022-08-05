@@ -7,3 +7,7 @@ Currently, it scrapes the latest 15 upcomming events.
 # Installation
 
 See the [wiki](https://github.com/JeanS-github/GCC-bot/wiki) page.
+
+# Licence
+
+This project is under [MIT](LICENSE) License.
