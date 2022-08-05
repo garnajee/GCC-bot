@@ -13,12 +13,12 @@ import ctftime_scraper
 
 client = discord.Client()   # create client (the bot)
 
-# Instantiate CtfTimeScraper class from ctftime-scraper.py
+# Instantiate CtfTimeScraper class from ctftime_scraper.py
 scraper = ctftime_scraper.CtfTimeScraper()
 
 # Create an event with the same name as the function
-# "@client.event" indique que la fonction on_ready doit recevoir les infos 
-# envoyées lorsque l'évènement est appelé par discord, devant chaque fonction
+# "@client.event" tells us that the function on_ready must receive the information 
+# sent when the event is called by discord, before each function
 
 @client.event
 async def on_ready():
@@ -98,5 +98,4 @@ async def before_ctf_events():
 # load ".env" file with the token information
 load_dotenv()
 token = os.environ.get('DISCORD_TOKEN')
-#token = "insert_your_token_here(deprecated)"
 client.run(token)   # run discord client (bot)
