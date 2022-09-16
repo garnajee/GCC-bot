@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 from dateutil.parser import parse
 import json
+from discord import Embed, Colour
 from urllib import request
 from urllib.request import Request, urlopen
 import re
@@ -8,9 +9,9 @@ import re
 class CtfTimeScraper:
     def __init__(self):
         self.headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36"}
-        self.url = "https://ctftime.org/api/v1/events/?limit=15"
+        self.url = "https://ctftime.org/api/v1/events/?limit=15"    # limit of the last 15 CTF
 
-    def ctftime_contest(self):
+    def parsing(self):
         answ = Request(self.url, headers=self.headers)
         resp = urlopen(answ).read()
 
@@ -19,48 +20,22 @@ class CtfTimeScraper:
         resp_body = resp.decode('utf8')
         events = json.loads(resp_body)
 
+        nevt = len(events)
         # Initialize string to return
-        #contests_string = "Latest 15 Capture The Flags\n"
-        for event in events:
+        for i,event in enumerate(events):
             # Iterate over the dictionary to extract
             # info for all on-line competitions
             if event['onsite'] == True:
                 continue
-
-            contests_string += "Name: {}\n".format(event['title'])
-
-            time_meta = event['start']
-            time_comp = parse(time_meta).strftime("%d/%m/%Y - %H:%M:%S")
-            contests_string += "From: {}\n".format(time_comp)
-
-            time_meta = event['finish']
-            time_comp = parse(time_meta).strftime("%d/%m/%Y - %H:%M:%S")
-            contests_string += "To: {}\n".format(time_comp)
-
-            contests_string += "Format: {}\n".format(event['format'])
-            contests_string += "Duration: {} Days {} Hours\n\n".format(event['duration']['days'], event['duration']['hours'])
-            
-            contests_string += "url: {}\n\n".format(event['ctftime_url'])
-        return contests_string
-    
-    def parse(self,allctf):
-        """
-        Function to parse the last 15 ctf events in a list to display it in a dynamic message
-        """
-        blocs = re.findall(r'Name: (.*)\nFrom: (.*)\nTo: (.*)\nFormat: (.*)\nDuration: (.*)\nurl: (.*)\n', allctf)
-
-        ctf_pages = []
-        for bloc in blocs:
-          Name, From, To, Format, Duration, url = bloc
-          sous_str = f'discord.Embed(title="{Name}",description="From: {From}\nTo: {To}\nFormat: {Format}\nDuration: {Duration}\nurl: {url}",colour=discord.Colour.light_grey())'
-          ctf_pages.append(sous_str)
-        return ctf_pages
+            # creating an "Embed" object
+            contests_string = Embed(title=f"**{i+1}/{nevt} - {event['title']}**",description=f"**From:** {parse(event['start']).strftime('%d/%m/%Y - %H:%M:%S')}\n**To:** {parse(event['finish']).strftime('%d/%m/%Y - %H:%M:%S')}\n**Format:** {event['format']}\n**Duration:** {event['duration']['days']} Days {event['duration']['hours']} Hours\n\n**url:** {event['ctftime_url']}",colour=Colour.light_grey())
+            yield contests_string
 
 if __name__ == "__main__":
     # instantiate the class
     scraper = CtfTimeScraper()
-    # call the function, and print the results
-    # print(scraper.ctftime_contest())
-    allctf_string=scraper.ctftime_contest()
-    print(scraper.parse(allctf_string))
+    # for testing purpose
+    for i in scraper.parsing():
+        print(i)
+        print()
     
